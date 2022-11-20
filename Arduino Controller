@@ -1,0 +1,81 @@
+int enA = 9;
+int in1 = 8;
+int in2 = 7;
+int in3 = 11;
+int in4 = 12;
+int enB = 10;
+
+String cmd;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(enA, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
+  pinMode(enB, OUTPUT);
+
+}
+
+void loop() {
+  while(Serial.available()==0){
+    
+  }
+  cmd=Serial.readStringUntil('\r');
+  
+  if(cmd=="extreme left"){
+    analogWrite(enA, 255);
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+    digitalWrite(in3, LOW);
+    digitalWrite(in4, HIGH);
+    analogWrite(enB, 255);
+  }
+  
+  else if(cmd=="left"){
+    analogWrite(enA, 0);
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, LOW);
+    digitalWrite(in3, LOW);
+    digitalWrite(in4, HIGH);
+    analogWrite(enB, 255); 
+  }
+  
+  else if(cmd=="forward"){
+    analogWrite(enA, 255);
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, HIGH);
+    digitalWrite(in3, LOW);
+    digitalWrite(in4, HIGH);
+    analogWrite(enB, 255); 
+  }
+  
+  else if(cmd=="right"){
+    analogWrite(enA, 255);
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, HIGH);
+    digitalWrite(in3, LOW);
+    digitalWrite(in4, LOW);
+    analogWrite(enB, 0); 
+  }
+  
+  if(cmd=="extreme right"){
+    analogWrite(enA, 255);
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, HIGH);
+    digitalWrite(in3, HIGH);
+    digitalWrite(in4, LOW);
+    analogWrite(enB, 255);
+  }
+
+  if(cmd=="stop"){
+    analogWrite(enA, 0);
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, LOW);
+    digitalWrite(in3, LOW);
+    digitalWrite(in4, LOW);
+    analogWrite(enB, 0);
+  }
+  
+}
