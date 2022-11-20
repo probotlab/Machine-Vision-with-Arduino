@@ -1,14 +1,16 @@
+import serial
+arduinoData=serial.Serial('com5',115200)
+
 import cv2
 import numpy as np
 import time
-import controller1 as cmt
 
 
 def f(x):
     # any operation
     pass
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture('http://192.168.1.3:4747/video')
 
 cv2.namedWindow("Trackbars")
 cv2.createTrackbar("L-H", "Trackbars", 0, 180, f)
@@ -22,6 +24,7 @@ font = cv2.FONT_HERSHEY_PLAIN
 
 while True:
     #time.sleep(0.1)
+
     _, frame = cap.read()
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
@@ -98,36 +101,49 @@ while True:
                     i = i + 1
                 ans=str(int(np.degrees(np.arctan((y2-y1)/(x2-x1)))))
                 #print(ans)
-                total = int(ans)
-                cmt.direction(total)  
+                total = int(ans)               
 
                 if total >= 1 and total < 37:
                     print("extreme left")
                     cv2.putText(frame, "extreme left", (20, 70), font, 5, (255, 0, 0), 5)
+                    myCmd= str("extreme left") +'\r'
+                    arduinoData.write(myCmd.encode())
 
                 elif total >= 37 and total < 72:
                     print("left")
                     cv2.putText(frame, "left", (20, 70), font, 5, (255, 0, 0), 5)
+                    myCmd= str("left") +'\r'
+                    arduinoData.write(myCmd.encode())
 
                 elif total >= 72 and total <= 90:
                     print("forward")
                     cv2.putText(frame, "forward", (20, 70), font, 5, (255, 0, 0), 5)
+                    myCmd= str("forward") +'\r'
+                    arduinoData.write(myCmd.encode())
 
                 elif total >= -89 and total < -72:
                     print("forward")
                     cv2.putText(frame, "forward", (20, 70), font, 5, (255, 0, 0), 5)
+                    myCmd= str("forward") +'\r'
+                    arduinoData.write(myCmd.encode())
 
                 elif total >=  -72 and total < -37:
                     print("right")
                     cv2.putText(frame, "right", (20, 70), font, 5, (255, 0, 0), 5)
+                    myCmd= str("right") +'\r'
+                    arduinoData.write(myCmd.encode())
 
                 elif total >=  -37 and total < -1:
                     print("extreme right")
                     cv2.putText(frame, "extreme right", (20, 70), font, 5, (255, 0, 0), 5)
+                    myCmd= str("extreme right") +'\r'
+                    arduinoData.write(myCmd.encode())
 
                 else:
                     print("stop")
                     cv2.putText(frame, "stop", (20, 70), font, 5, (255, 0, 0), 5)
+                    myCmd= str("stop") +'\r'
+                    arduinoData.write(myCmd.encode())
 
     cv2.imshow("Frame", frame)
     cv2.imshow("Mask", mask)
